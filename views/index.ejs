@@ -1,12 +1,24 @@
 <% include header %>
 
-<div id="title-wrapper">
-  <h1 id="title">Audience Engagement Analyzer</h1>  
+<div id="splash-page">
+  <h1 id="title">Audience Engagement Analyzer</h1>
+  <i id="start-splash-page" class="fa fa-play-circle icon" aria-hidden="true"></i>
 </div>
-<div class="chart-wrapper">
-  <div class="chart-area-wrapper">
-    <canvas id="chart" width="400" height="100" ></canvas>
+
+<div id="recording-page">
+  <div id="title-wrapper">
+    <h1 id="title">Audience Engagement Analyzer</h1>
+    <i id="stop" class="fa fa-stop-circle-o icon" aria-hidden="true"></i>
+    <i id="start-recording-page" class="fa fa-play-circle icon" aria-hidden="true"></i>
   </div>
+  <div class="chart-wrapper">
+    <div class="chart-area-wrapper">
+      <canvas id="chart" width="400" height="100" ></canvas>
+    </div>
+  </div>
+  <div id="text">
+
+  </div>  
 </div>
 
 <% include footer %>

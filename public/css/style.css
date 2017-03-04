@@ -10,6 +10,19 @@ body {
   color: white;
 }
 
+#splash-page {
+  display: block;
+}
+
+#recording-page {
+  display: none;
+}
+
+.icon {
+  font-size: 50px !important;
+  cursor: pointer;
+}
+
 #title-wrapper {
   width: 100vw;
   top: 20px;
@@ -27,6 +40,8 @@ body {
 
 #chart {
   position: absolute;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .chart-area-wrapper {
