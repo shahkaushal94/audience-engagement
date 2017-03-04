@@ -5,36 +5,32 @@ html {
 
 body {
   height: 100vh;
-  margin: 0;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  overflow: hidden;
-  padding: 50px;
+  overflow-y: hidden;
   font: 14px "Cabin", sans-serif;
   color: white;
 }
 
-#title {
+#title-wrapper {
+  width: 100vw;
+  top: 20px;
   text-align: center;
-  font-size: 36px;
+  position: fixed;
 }
 
-a {
-  color: #00B7FF;
+#title {
+  font-size: 36px;
 }
 
 .chart-wrapper {
   position: relative;
 }
 
-.chart-wrapper > canvas {
+#chart {
   position: absolute;
-  left: 0;
-  top: 0;
-  pointer-events: none;
 }
 
 .chart-area-wrapper {
+  margin-top: 22vh;
   width: 1500px;
   overflow-x: scroll;
 }

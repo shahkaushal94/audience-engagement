@@ -34,12 +34,12 @@ $(document).ready(function() {
             display:false
           },
           ticks: {
-            beginAtZero:true
+            beginAtZero: true
           }
         }]
       },
       legend: {
-        position: 'right'
+        position: 'left'
       }
     }
   });
