@@ -23,17 +23,17 @@ span {
     animation: blink 750ms infinite;
 }
 
-    .listening .cursor {
-        display: inline;
-    }
+.listening .cursor {
+    display: inline;
+}
 
 
-    @keyframes blink {
+@keyframes blink {
 
-        60% {opacity: 1;}
-        
-        0%, 100% {opacity: 0;}
-    }
+    60% {opacity: 1;}
+    
+    0%, 100% {opacity: 0;}
+}
 
 #toggleMic {
     position: fixed;
@@ -52,14 +52,14 @@ span {
     height: 40px;
 }
 
-    #toggleMic:hover {
-        background-color: #1eaaff;
-    }
+#toggleMic:hover {
+    background-color: #1eaaff;
+}
 
-    .listening #toggleMic {
-        background-color: red;
-    }
+.listening #toggleMic {
+    background-color: red;
+}
 
-    .listening #toggleMic:hover {
-        background-color: lightcoral;
-    }
+.listening #toggleMic:hover {
+    background-color: lightcoral;
+}
