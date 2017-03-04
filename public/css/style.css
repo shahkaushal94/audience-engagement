@@ -1,6 +1,22 @@
+html {
+  background: linear-gradient(#9b59b6, #8e44ad);
+  height: 100vh;
+}
+
 body {
+  height: 100vh;
+  margin: 0;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  overflow: hidden;
   padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 14px "Cabin", sans-serif;
+  color: white;
+}
+
+#title {
+  text-align: center;
+  font-size: 36px;
 }
 
 a {
@@ -8,17 +24,17 @@ a {
 }
 
 .chart-wrapper {
-    position: relative;
+  position: relative;
 }
 
 .chart-wrapper > canvas {
-    position: absolute;
-    left: 0;
-    top: 0;
-    pointer-events: none;
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
 }
 
 .chart-area-wrapper {
-    width: 1500px;
-    overflow-x: scroll;
+  width: 1500px;
+  overflow-x: scroll;
 }
