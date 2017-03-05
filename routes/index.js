@@ -1,9 +1,7 @@
 var express = require('express');
 var router = express.Router();
-//var getImage = require('../getImage.js');
 
 /* GET home page. */
-
 router.get('/', function(req, res) {
   res.render('index', {
     title: 'Audience Engagement Analyzer'
@@ -25,6 +23,5 @@ router.get('/getImage', function(req, res, next){
 	py.stdin.write(JSON.stringify(data));
 	py.stdin.end();
 })
-
 
 module.exports = router;
