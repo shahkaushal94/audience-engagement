@@ -1,7 +1,6 @@
 var chart;
 
 $(document).ready(function() {
-  $('#recording-page').css('display', 'none');
   Chart.defaults.global.defaultFontColor = 'white';
   chart = new Chart($('#chart'), {
     type: 'line',
