@@ -1,5 +1,6 @@
 var chart;
 var info = {};
+window.scores = [];
 
 $(document).ready(function() {
   Chart.defaults.global.defaultFontColor = 'white';
@@ -98,24 +99,25 @@ var controllers = {
     clearInterval(timer);
   },
   update: function() {
-    // $.get({
-    //   url: "emotions.py"
-    // }).done(function(data) {
-
-    // }).fail(function(err) {
-    //   console.log('Failed:', err);
-    // });
     $('#splash-page').css('display', 'none');
     var first = chart.data.datasets[0].data;
     var second = chart.data.datasets[1].data;
 
-    setInterval(getImageScores(first), 4000)
+    setInterval(getImageScores(), 5000)
 
-    if( window.sentiStats !== undefined){
+    console.log(window.scores)
+    console.log("first", first);
+    var scores = window.scores;
+    if(scores !== null && scores[scores.length-1] !== undefined){
+       first.push(scores[scores.length-1]);
+       first.shift();
+    }
+
+    if (window.sentiStats !== undefined) {
       var sentiStats = window.sentiStats;
     }
-    if (sentiStats !== null && sentiStats !== undefined){
-      second.push(sentiStats[sentiStats.length- 1]*100);
+    if (sentiStats !== null && sentiStats !== undefined) {
+      second.push(sentiStats[sentiStats.length - 1] * 100);
       second.shift();
     }
     
@@ -135,9 +137,11 @@ var view = {
   }
 }
 
-function getImageScores(first){
+function getImageScores(){
   axios.get('http://localhost:3000/getImage')
   .then(function(data){
-    console.log(first.push(data.data))
+    var score = parseInt(data.data)*10.56 || 0;
+    console.log(score);
+    window.scores.push(score);
   })
 }
