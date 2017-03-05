@@ -10,7 +10,7 @@ py.stdout.on('data', function(data){
   //dataString += data.toString();
   console.log(data.toString());
   score = data.toString();
-  return score;
+  //return score;
 });
 py.stdout.on('end', function(){
  //console.log('Sum of numbers=',dataString);
@@ -20,7 +20,6 @@ py.stdin.write(JSON.stringify(data));
 py.stdin.end();
 
 return score;
-
 }
 
 module.exports = getImages;

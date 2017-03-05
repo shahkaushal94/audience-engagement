@@ -11,7 +11,7 @@ router.get('/', function(req, res) {
 });
 
 router.get('/getImage', function(req, res, next){
-	console.log(getImages());
+	console.log("server", getImages());
 
 	res.send({
 		data: getImages()
