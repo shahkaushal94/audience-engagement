@@ -1,4 +1,4 @@
-function getImages(){
+function getImages() {
 
 var spawn = require('child_process').spawn,
     py    = spawn('python', ['emotions.py']),

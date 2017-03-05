@@ -10,13 +10,12 @@ router.get('/', function(req, res) {
   });
 });
 
-router.get('/getImage', function(req, res, next){
-	console.log("server", getImages());
+// router.get('/getImage', function(req, res, next){
+// 	console.log("server", getImages());
 
-	res.send({
-		data: getImages()
-	})
-})
-
+// 	res.send({
+// 		data: getImages()
+// 	})
+// })
 
 module.exports = router;
