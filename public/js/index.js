@@ -115,8 +115,8 @@ var controllers = {
     $('#start-recording-page').css('display', 'none');
     $('#stop').css('display', 'none');
     $('#text-wrapper').html("");
-    var maxWidth = Math.max(info.userData.data.length, info.audienceData.data.length);
-    $('#text-wrap').css('width', 10 * maxWidth + 'vw');
+    // var maxWidth = Math.max(info.userData.data.length, info.audienceData.data.length);
+    // $('#text-wrap').css('width', 10 * maxWidth + 'vw');
     chart.data.labels.length = info.userData.data.length;
     chart.data.labels.fill("");
     chart.data.datasets[0].data = info.userData.data;
@@ -143,22 +143,18 @@ var controllers = {
   updateAudience: function() {
     var audienceData = chart.data.datasets[1].data;
 
-    setInterval(getImageScores(), 5000)
+    setInterval(function() {
+      getImageScores()
+    }, 5000);
 
     console.log(window.scores)
     var scores = window.scores;
-    if(scores !== null && scores[scores.length-1] !== undefined){
-       audienceData.push(scores[scores.length-1]);
-       audienceData.shift();
-     }
-
-    info.audienceData.data.push(0);
-    info.audienceData.info.push({
-      image: "",
-      rating: 0
-    });
-    audienceData.push(0);
-    audienceData.shift();
+    // if (scores !== null && scores[scores.length - 1] !== undefined) {
+    //   info.audienceData.data.push(scores.rating);
+    //   info.audienceData.info.push(scores);
+    //   audienceData.push(scores[scores.length - 1]);
+    //   audienceData.shift();
+    // }
 
     chart.update();
   },
