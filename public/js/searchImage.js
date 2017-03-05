@@ -1,7 +1,7 @@
-function getSearchImages(callback) {
+function getSearchImages(queryString, callback) {
     var params = {
             // Request parameters
-            'q' : 'silly cats'
+            'q' : queryString
         };
         
         $.post({
@@ -15,9 +15,7 @@ function getSearchImages(callback) {
             data: "{body}",
         })
         .done(function(data) {
-            if (callback) {
-                return callback(data.value[0].contentUrl);
-            }
+            return callback(data.value[0].contentUrl);
         })
         .fail(function(err) {
             console.log(err);
