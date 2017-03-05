@@ -1,4 +1,8 @@
 var chart;
+var info = {};
+window.scores = [];
+var startTime = Date();
+
 var info = {
   userData: {
     data: [],
@@ -80,7 +84,9 @@ $(document).ready(function() {
   });
 });
 
-var timer;
+var timerUser;
+var timerAudience;
+var timerImage;
 
 var controllers = {
   start: function() {
@@ -99,19 +105,22 @@ var controllers = {
     }, 5000);
     timerImage = setInterval(function() {
       _this.updateImage()
-    }, 5000);
+    }, 15000);
   },
   pause: function() {
     $('#pause').css('display', 'none');
     $('#start-recording-page').css('display', 'inline');
-    clearInterval(timer);
+    clearInterval(timerUser);
+    clearInterval(timerAudience);
+    clearInterval(timerImage);
   },
   stop: function() {
-    $('#pause').css('display', 'none');
+    this.pause();
     $('#start-recording-page').css('display', 'none');
     $('#stop').css('display', 'none');
-    $('#text-wrap').innerHTML = "";
-    clearInterval(timer);
+    $('#text-wrapper').html("");
+    // var maxWidth = Math.max(info.userData.data.length, info.audienceData.data.length);
+    // $('#text-wrap').css('width', 10 * maxWidth + 'vw');
     chart.data.labels.length = info.userData.data.length;
     chart.data.labels.fill("");
     chart.data.datasets[0].data = info.userData.data;
@@ -123,7 +132,6 @@ var controllers = {
 
     if (window.sentiStats !== undefined) {
       var sentiStats = window.sentiStats;
-      console.log(sentiStats, typeof sentiStats);
     }
     if (sentiStats !== null && sentiStats !== undefined) {
       var returnInfo = sentiStats[sentiStats.length - 1];
@@ -131,7 +139,6 @@ var controllers = {
       info.userData.info.push(returnInfo);
       userData.push(returnInfo.rating);
       userData.shift();
-      console.log("User: " + info.userData.info);
     }
 
     chart.update();
@@ -139,19 +146,25 @@ var controllers = {
   updateAudience: function() {
     var audienceData = chart.data.datasets[1].data;
 
-    info.audienceData.data.push(0);
-    info.audienceData.info.push({
-      image: "",
-      rating: 0
-    });
-    audienceData.push(0);
-    audienceData.shift();
-    console.log("Audience: " + info.audienceData.info);
+    setInterval(function() {
+      getImageScores()
+    }, 5000);
+
+    console.log(window.scores)
+    var scores = window.scores;
+    if (scores !== null && scores[scores.length - 1] !== undefined) {
+      info.audienceData.data.push(scores[scores.length - 1]);
+      info.audienceData.info.push({
+        rating: scores[scores.length - 1]
+      });
+      audienceData.push(scores[scores.length - 1]);
+      audienceData.shift();
+    }
 
     chart.update();
   },
   updateImage: function() {
-    getSearchImages(info.userData.info[info.userData.info.length - 1].text, view.openImage);
+    getSearchImages(info.userData.info.length == 0 ? "" : info.userData.info[info.userData.info.length - 1].text, view.openImage);
   }
 };
 
@@ -164,22 +177,31 @@ var view = {
     if (activePoint.length > 0) {
       var type = activePoint[0]._datasetIndex;
       var index = activePoint[0]._index + 1;
+      console.log(activePoint);
       if (type == 0 && info.userData.info.length >= index) {
-        console.log('heyyy');
         var userData = info.userData.info[index];
-        $('#speech').html(userData.text);
-        $('#speech-rating').html(userData.rating);
-      } else if (type == 1 && info.audienceData.info_length >- index) {
+        $('#modal').html("<h3>Speech: " + userData.text + "<br>Rating: " + userData.rating + "</h3>");
+      } else if (type == 1 && info.audienceData.info_length >= index) {
         var audienceData = info.audienceData.info[index];
-        $('#image').html(audienceData.image);
-        $('#image-rating').html(audienceData.rating);
+        $('#modal').html("<img src='" + audienceData.image + "'><h3><br>Rating: " + audienceData.rating + "</h3>");
       }
       $('#modal').foundation('open');
     }
   },
   openImage: function(source) {
-    console.log(source);
-    $('#image-rating').innerHTML = source;
+    $('#modal').html("<img src='" + source + "'>");
     $('#modal').foundation('open');
+    setTimeout(function() {
+      $('#modal').foundation('close');
+    }, 1500);
   }
+}
+
+function getImageScores() {
+  axios.get('/getImage')
+  .then(function(data){
+    var score = parseInt(data.data) * 10.56 || 0;
+    console.log(score);
+    window.scores.push(score);
+  })
 }

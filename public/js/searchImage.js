@@ -9,7 +9,7 @@ function getSearchImages(queryString, callback) {
             beforeSend: function(xhrObj){
                 // Request headers
                 xhrObj.setRequestHeader("Content-Type","multipart/form-data");
-                xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key","a83e41c436674949a3b3798fa1391761");
+                xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key","22e1a66378f34b84b9aecac858361442");
             },
             // Request body
             data: "{body}",

@@ -1,0 +1,143 @@
+[1mdiff --git a/emotions.py b/emotions.py[m
+[1mindex b697148..de760bc 100644[m
+[1m--- a/emotions.py[m
+[1m+++ b/emotions.py[m
+[36m@@ -202,7 +202,7 @@[m [mdef getRetValue():[m
+ [m
+ [m
+ def main():[m
+[31m-    getRetValue()[m
+[32m+[m[32m    print(getRetValue())[m
+             [m
+ [m
+ if __name__ == "__main__":[m
+[1mdiff --git a/getImage.js b/getImage.js[m
+[1mindex 28d72d5..dceb612 100644[m
+[1m--- a/getImage.js[m
+[1m+++ b/getImage.js[m
+[36m@@ -1,27 +1,10 @@[m
+[31m-function getImages(){[m
+[32m+[m[32mfunction getImage(req, res){[m
+ [m
+[31m-var spawn = require('child_process').spawn,[m
+[31m-    py    = spawn('python27', ['emotions.py']),[m
+[31m-    data = [1,2,3,4,5,6,7,8,9],[m
+[31m-    dataString = '';[m
+[31m-    score = null;[m
+ [m
+[31m-py.stdout.on('data', function(data){[m
+[31m-  //dataString += data.toString();[m
+[31m-  console.log(data.toString());[m
+[31m-  score = data.toString();[m
+[31m-  //return score;[m
+[31m-});[m
+[31m-py.stdout.on('end', function(){[m
+[31m- //console.log('Sum of numbers=',dataString);[m
+[31m-});[m
+ [m
+[31m-py.stdin.write(JSON.stringify(data));[m
+[31m-py.stdin.end();[m
+[31m-[m
+[31m-return score;[m
+[32m+[m[32mreturn py.stdout;[m
+ }[m
+ [m
+[31m-module.exports = getImages;[m
+[32m+[m[32mmodule.exports = getImage;[m
+ [m
+[31m-setInterval(getImages, 5000)[m
+\ No newline at end of file[m
+[32m+[m[32msetInterval(getImage, 5000)[m
+\ No newline at end of file[m
+[1mdiff --git a/public/js/index.js b/public/js/index.js[m
+[1mindex 7cb8f7f..a03b1b2 100644[m
+[1m--- a/public/js/index.js[m
+[1m+++ b/public/js/index.js[m
+[36m@@ -109,12 +109,10 @@[m [mvar controllers = {[m
+     var first = chart.data.datasets[0].data;[m
+     var second = chart.data.datasets[1].data;[m
+ [m
+[31m-    first.push();[m
+[31m-    first.shift();[m
+[32m+[m[32m    setInterval(getImageScores(first), 4000)[m
+ [m
+     if( window.sentiStats !== undefined){[m
+       var sentiStats = window.sentiStats;[m
+[31m-      console.log(sentiStats, typeof sentiStats) [m
+     }[m
+     if (sentiStats !== null && sentiStats !== undefined){[m
+       second.push(sentiStats[sentiStats.length- 1]*100);[m
+[36m@@ -136,3 +134,10 @@[m [mvar view = {[m
+     $('#recording-page').css('display', 'block');[m
+   }[m
+ }[m
+[32m+[m
+[32m+[m[32mfunction getImageScores(first){[m
+[32m+[m[32m  axios.get('http://localhost:3000/getImage')[m
+[32m+[m[32m  .then(function(data){[m
+[32m+[m[32m    console.log(first.push(data.data))[m
+[32m+[m[32m  })[m
+[32m+[m[32m}[m
+[1mdiff --git a/routes/index.js b/routes/index.js[m
+[1mindex ca3dbda..72d81a1 100644[m
+[1m--- a/routes/index.js[m
+[1m+++ b/routes/index.js[m
+[36m@@ -1,6 +1,6 @@[m
+ var express = require('express');[m
+ var router = express.Router();[m
+[31m-var getImages = require('../getImage.js');[m
+[32m+[m[32m//var getImage = require('../getImage.js');[m
+ [m
+ /* GET home page. */[m
+ [m
+[36m@@ -11,11 +11,22 @@[m [mrouter.get('/', function(req, res) {[m
+ });[m
+ [m
+ router.get('/getImage', function(req, res, next){[m
+[31m-	console.log("server", getImages());[m
+[32m+[m	[32mfunction getScore(){[m
+[32m+[m		[32mvar spawn = require('child_process').spawn,[m
+[32m+[m		[32m  py    = spawn('python27', ['emotions.py']),[m
+[32m+[m		[32m  data = [1,2,3,4,5,6,7,8,9],[m
+[32m+[m		[32m  dataString = '';[m
+ [m
+[31m-	res.send({[m
+[31m-		data: getImages()[m
+[31m-	})[m
+[32m+[m		[32mpy.stdout.on('data', function(data){[m
+[32m+[m			[32m//dataString += data.toString();[m
+[32m+[m			[32mconsole.log(data.toString());[m
+[32m+[m			[32mres.end(data.toString());[m
+[32m+[m		[32m});[m
+[32m+[m
+[32m+[m		[32mpy.stdin.write(JSON.stringify(data));[m
+[32m+[m		[32mpy.stdin.end();[m
+[32m+[m	[32m}[m
+[32m+[m	[32msetInterval(getScore, 5000)[m
+ })[m
+ [m
+ [m
+[1mdiff --git a/test_image.jpg b/test_image.jpg[m
+[1mindex 2951753..1477bdf 100644[m
+Binary files a/test_image.jpg and b/test_image.jpg differ
+[1mdiff --git a/views/index.ejs b/views/index.ejs[m
+[1mindex 0964b46..4a1ee60 100644[m
+[1m--- a/views/index.ejs[m
+[1m+++ b/views/index.ejs[m
+[36m@@ -28,15 +28,11 @@[m
+       <canvas id="chart" width="400" height="100" ></canvas>[m
+     </div>[m
+   </div>[m
+[31m-<<<<<<< HEAD[m
+[31m-  <div id="text">[m
+[31m-=======[m
+[31m-  [m
+[32m+[m[32m  <div id="text">[m[41m  [m
+   <div id="text-wrapper" class="text-center">[m
+     <h3>[m
+       hey[m
+     </h3>[m
+[31m->>>>>>> 0def3691160be4f60e7b62481008f05b15c9599c[m
+   </div>  [m
+ </div>   [m
+ <span id=outputText></span><span class="cursor"> |</span>[m

@@ -24,6 +24,11 @@ i {
   display: inline;
 }
 
+img {
+  width: 35%
+  height: auto;
+}
+
 #splash-page {
   margin-top: 30vh;
 }

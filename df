@@ -1,0 +1,231 @@
+[1mdiff --cc getImage.js[m
+[1mindex dceb612,1f9a8b0..0000000[m
+[1m--- a/getImage.js[m
+[1m+++ b/getImage.js[m
+[36m@@@ -1,10 -1,27 +1,18 @@@[m
+[31m -function getImages(){[m
+[32m +function getImage(req, res){[m
+  [m
+[32m++<<<<<<< HEAD[m
+[32m++=======[m
+[32m+ var spawn = require('child_process').spawn,[m
+[32m+     py    = spawn('python', ['emotions.py']),[m
+[32m+     data = [1,2,3,4,5,6,7,8,9],[m
+[32m+     dataString = '';[m
+[32m+     score = null;[m
+[32m++>>>>>>> 94976735c28b5f733baac18dbefe35a263a5a942[m
+  [m
+[31m -py.stdout.on('data', function(data){[m
+[31m -  //dataString += data.toString();[m
+[31m -  console.log(data.toString());[m
+[31m -  score = data.toString();[m
+[31m -  //return score;[m
+[31m -});[m
+[31m -py.stdout.on('end', function(){[m
+[31m - //console.log('Sum of numbers=',dataString);[m
+[31m -});[m
+  [m
+[31m -py.stdin.write(JSON.stringify(data));[m
+[31m -py.stdin.end();[m
+[31m -[m
+[31m -return score;[m
+[32m +return py.stdout;[m
+  }[m
+  [m
+[31m -module.exports = getImages;[m
+[32m +module.exports = getImage;[m
+  [m
+[31m -setInterval(getImages, 5000)[m
+[32m +setInterval(getImage, 5000)[m
+[1mdiff --cc public/js/index.js[m
+[1mindex a03b1b2,20bb259..0000000[m
+[1m--- a/public/js/index.js[m
+[1m+++ b/public/js/index.js[m
+[36m@@@ -1,5 -1,5 +1,6 @@@[m
+  var chart;[m
+  var info = {};[m
+[32m++window.scores = [];[m
+  [m
+  $(document).ready(function() {[m
+    Chart.defaults.global.defaultFontColor = 'white';[m
+[36m@@@ -109,13 -102,15 +103,21 @@@[m [mvar controllers = [m
+      var first = chart.data.datasets[0].data;[m
+      var second = chart.data.datasets[1].data;[m
+  [m
+[31m-     setInterval(getImageScores(first), 4000)[m
+[31m -    first.push(0);[m
+[31m -    first.shift();[m
+[32m++    setInterval(getImageScores(), 5000)[m
+[32m++[m
+[32m++    console.log(window.scores)[m
+[32m++    console.log("first", first);[m
+[32m++    var scores = window.scores;[m
+[32m++    if(scores !== null && scores[scores.length-1] !== undefined){[m
+[32m++       first.push(scores[scores.length-1]);[m
+[32m++       first.shift();[m
+[32m++    }[m
+  [m
+[31m-     if( window.sentiStats !== undefined){[m
+[32m+     if (window.sentiStats !== undefined) {[m
+        var sentiStats = window.sentiStats;[m
+[31m -      console.log(sentiStats, typeof sentiStats) [m
+      }[m
+[31m-     if (sentiStats !== null && sentiStats !== undefined){[m
+[31m-       second.push(sentiStats[sentiStats.length- 1]*100);[m
+[32m+     if (sentiStats !== null && sentiStats !== undefined) {[m
+[32m+       second.push(sentiStats[sentiStats.length - 1] * 100);[m
+        second.shift();[m
+      }[m
+      [m
+[36m@@@ -134,10 -129,3 +136,12 @@@[m [mvar view = [m
+      $('#recording-page').css('display', 'block');[m
+    }[m
+  }[m
+[32m +[m
+[31m- function getImageScores(first){[m
+[32m++function getImageScores(){[m
+[32m +  axios.get('http://localhost:3000/getImage')[m
+[32m +  .then(function(data){[m
+[31m-     console.log(first.push(data.data))[m
+[32m++    var score = parseInt(data.data)*10.56 || 0;[m
+[32m++    console.log(score);[m
+[32m++    window.scores.push(score);[m
+[32m +  })[m
+[32m +}[m
+[1mdiff --cc test_image.jpg[m
+[1mindex 1477bdf,c316ba5..0000000[m
+Binary files differ
+[1mdiff --cc views/index.ejs[m
+[1mindex 4a1ee60,8b4b5f8..0000000[m
+[1m--- a/views/index.ejs[m
+[1m+++ b/views/index.ejs[m
+[36m@@@ -28,11 -37,10 +37,15 @@@[m
+        <canvas id="chart" width="400" height="100" ></canvas>[m
+      </div>[m
+    </div>[m
+[32m +  <div id="text">  [m
+[32m +  <div id="text-wrapper" class="text-center">[m
+[32m +    <h3>[m
+[32m +      hey[m
+[31m-     </h3>[m
+[32m++    </h3> [m
+[32m+   <div id="text-wrapper" class="text-center">[m
+[32m+   <h3>[m
+[32m+     [m
+[32m+   </h3>[m
+    </div>  [m
+  </div>   [m
+  <span id=outputText></span><span class="cursor"> |</span>[m
+[1mdiff --git a/app.js b/app.js[m
+[1mindex b9d9ff0..0c5c50f 100644[m
+[1m--- a/app.js[m
+[1m+++ b/app.js[m
+[36m@@ -1,4 +1,5 @@[m
+ var express = require('express');[m
+[32m+[m[32mvar compression = require('compression')[m
+ var path = require('path');[m
+ var favicon = require('serve-favicon');[m
+ var logger = require('morgan');[m
+[36m@@ -8,6 +9,8 @@[m [mvar bodyParser = require('body-parser');[m
+ var routes = require('./routes/index');[m
+ [m
+ var app = express();[m
+[32m+[m[32m//optimization[m
+[32m+[m[32mapp.use(compression())[m
+ [m
+ var env = process.env.NODE_ENV || 'development';[m
+ app.locals.ENV = env;[m
+[1mdiff --git a/emotions.py b/emotions.py[m
+[1mindex d0bede3..ce97eb7 100644[m
+[1m--- a/emotions.py[m
+[1m+++ b/emotions.py[m
+[36m@@ -124,25 +124,25 @@[m [mdef calcScore():[m
+     for item in resList:[m
+         #print item[m
+         if (item == "happiness"):[m
+[31m-            scoreImg+=4[m
+[32m+[m[32m            scoreImg+=5[m
+         elif (item == "sadness"):[m
+[31m-            scoreImg-=4[m
+[32m+[m[32m            scoreImg-=5[m
+         elif (item == "anger"):[m
+[31m-            scoreImg-=4[m
+[32m+[m[32m            scoreImg-=10[m
+         elif (item == "surprise"):[m
+[31m-            scoreImg+=4[m
+[32m+[m[32m            scoreImg+=10[m
+         elif (item == "contempt"):[m
+             scoreImg-=4[m
+         elif (item == "fear"):[m
+             scoreImg-=4[m
+         else:[m
+[31m-            scoreImg+=0[m
+[32m+[m[32m            scoreImg+=1[m
+     [m
+     length = len(resList)[m
+     try:[m
+         ans = (scoreImg/length)[m
+     except ZeroDivisionError:[m
+[31m-        ans = float('Inf')[m
+[32m+[m[32m        ans = 1[m
+         #print "Score during last speech duration :"[m
+     print ans[m
+         #print "\n"[m
+[36m@@ -202,7 +202,7 @@[m [mdef getRetValue():[m
+ [m
+ [m
+ def main():[m
+[31m-    print(getRetValue())[m
+[32m+[m[32m    getRetValue()[m
+             [m
+ [m
+ if __name__ == "__main__":[m
+[1mdiff --git a/package.json b/package.json[m
+[1mindex 82870fd..e4e57f8 100644[m
+[1m--- a/package.json[m
+[1m+++ b/package.json[m
+[36m@@ -15,6 +15,7 @@[m
+     "body-parser": "^1.13.3",[m
+     "chart.js": "^2.5.0",[m
+     "chartjs-plugin-zoom": "^0.4.5",[m
+[32m+[m[32m    "compression": "^1.6.2",[m
+     "cookie-parser": "^1.3.3",[m
+     "ejs": "^2.3.1",[m
+     "express": "^4.13.3",[m
+[1mdiff --git a/routes/index.js b/routes/index.js[m
+[1mindex 72d81a1..8da10ca 100644[m
+[1m--- a/routes/index.js[m
+[1m+++ b/routes/index.js[m
+[36m@@ -11,22 +11,19 @@[m [mrouter.get('/', function(req, res) {[m
+ });[m
+ [m
+ router.get('/getImage', function(req, res, next){[m
+[31m-	function getScore(){[m
+[31m-		var spawn = require('child_process').spawn,[m
+[32m+[m	[32mvar spawn = require('child_process').spawn,[m
+ 		  py    = spawn('python27', ['emotions.py']),[m
+ 		  data = [1,2,3,4,5,6,7,8,9],[m
+ 		  dataString = '';[m
+ [m
+[31m-		py.stdout.on('data', function(data){[m
+[31m-			//dataString += data.toString();[m
+[31m-			console.log(data.toString());[m
+[31m-			res.end(data.toString());[m
+[31m-		});[m
+[32m+[m	[32mpy.stdout.on('data', function(data){[m
+[32m+[m		[32m//dataString += data.toString();[m
+[32m+[m		[32mconsole.log(data.toString());[m
+[32m+[m		[32mres.end(data.toString());[m
+[32m+[m	[32m});[m
+ [m
+[31m-		py.stdin.write(JSON.stringify(data));[m
+[31m-		py.stdin.end();[m
+[31m-	}[m
+[31m-	setInterval(getScore, 5000)[m
+[32m+[m	[32mpy.stdin.write(JSON.stringify(data));[m
+[32m+[m	[32mpy.stdin.end();[m
+ })[m
+ [m
+ [m
+warning: LF will be replaced by CRLF in package.json.
+The file will have its original line endings in your working directory.
