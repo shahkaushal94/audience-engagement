@@ -40,12 +40,11 @@ body {
 
 #chart {
   position: absolute;
-  padding-left: 20px;
-  padding-right: 20px;
+  margin: 0 auto;
 }
 
 .chart-area-wrapper {
+  width: 95vw;
   margin-top: 22vh;
-  width: 1500px;
   overflow-x: scroll;
 }

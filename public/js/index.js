@@ -1,20 +1,22 @@
+var chart;
+
 $(document).ready(function() {
   Chart.defaults.global.defaultFontColor = 'white';
-  var chart = new Chart($('#chart'), {
+  chart = new Chart($('#chart'), {
     type: 'line',
     data: {
-      labels: ["", "", "", "", "", "", "", ""],
+      labels: ["", "", "", "", "", ""],
       datasets: [{
         label: 'Personal Tone',
         fill: false,
-        data: [20, 91, -30, 52, -21, 35, 80, 34, -64],
+        data: [],
         backgroundColor: 'yellow',
         borderColor: 'yellow',
         borderWidth: 1
       }, {
         label: 'Audience Engagement',
         fill: false,
-        data: [90, 41, 35, 21, -60, -85, 21, 56, -12],
+        data: [],
         backgroundColor: 'white',
         borderColor: 'white',
         borderWidth: 1
@@ -40,10 +42,17 @@ $(document).ready(function() {
         }]
       },
       legend: {
-        position: 'left'
+        position: 'top'
       }
     }
   });
+
+  var first = chart.data.datasets[0].data;
+  var second = chart.data.datasets[1].data;
+  first.length = 6;
+  second.length = 6;
+  first.fill(0);
+  second.fill(2);
 
   $('#start-splash-page').on("click", function() {
     controllers.start();
@@ -77,13 +86,21 @@ var controllers = {
     clearInterval(timer);
   },
   update: function() {
-    $.get({
-      url: "emotions.py"
-    }).done(function(data) {
+    // $.get({
+    //   url: "emotions.py"
+    // }).done(function(data) {
 
-    }).fail(function(err) {
-      console.log('Failed:', err);
-    });
+    // }).fail(function(err) {
+    //   console.log('Failed:', err);
+    // });
+    $('#splash-page').css('display', 'none');
+    var first = chart.data.datasets[0].data;
+    var second = chart.data.datasets[1].data;
+    first.push(30);
+    first.shift();
+    second.push(54);
+    second.shift();
+    chart.update();
   }
 };
 

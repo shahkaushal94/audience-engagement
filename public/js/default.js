@@ -38,7 +38,7 @@
                         }
                     })
                       .then(function (response) {
-                        console.log("Parital: " + partialTxt);
+                        console.log("Partial: " + partialTxt);
                         statsToDiaplay = `${statsToDiaplay} ${response.data.documents[0].score}`
                         document.getElementById('outputText').innerHTML 
                         = ` 
