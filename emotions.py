@@ -166,7 +166,7 @@ def captureClick():
     camera_capture = im
 
     #file = "/Users/prathameshnaik/Desktop/test_image.jpg"
-    file = "test_image.jpg"
+    file = "test_image" + str(time.time()) + ".jpg"
 
     # A nice feature of the imwrite method is that it will automatically choose the
     # correct format based on the file extension you provide. Convenient!

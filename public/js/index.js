@@ -112,6 +112,7 @@ var controllers = {
   },
   stop: function() {
     this.pause();
+    $('#start-recording-page').css('display', 'none');
     $('#stop').css('display', 'none');
     $('#text-wrapper').html("");
     var maxWidth = Math.max(info.userData.data.length, info.audienceData.data.length);
@@ -178,7 +179,7 @@ var view = {
       if (type == 0 && info.userData.info.length >= index) {
         var userData = info.userData.info[index];
         $('#modal').html("<h3>Speech: " + userData.text + "<br>Rating: " + userData.rating + "</h3>");
-=      } else if (type == 1 && info.audienceData.info_length >- index) {
+      } else if (type == 1 && info.audienceData.info_length >- index) {
         var audienceData = info.audienceData.info[index];
         $('#modal').html("<img src='" + audienceData.image + "'><h3><br>Rating: " + audienceData.rating + "</h3>");
       }
