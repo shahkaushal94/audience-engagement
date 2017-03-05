@@ -1,23 +1,22 @@
+var chart;
+var info = {};
+
 $(document).ready(function() {
   Chart.defaults.global.defaultFontColor = 'white';
-  var chart = new Chart($('#chart'), {
+  chart = new Chart($('#chart'), {
     type: 'line',
     data: {
-      labels: ["", "", "", "", "", "", "", ""],
+      labels: ["", "", "", "", ""],
       datasets: [{
-        label: 'Personal Tone',
         fill: false,
-        data: [20, 91, -30, 52, -21, 35, 80, 34, -64],
-        backgroundColor: 'yellow',
+        data: [],
         borderColor: 'yellow',
-        borderWidth: 1
+        borderWidth: 3
       }, {
-        label: 'Audience Engagement',
         fill: false,
-        data: [90, 41, 35, 21, -60, -85, 21, 56, -12],
-        backgroundColor: 'white',
+        data: [],
         borderColor: 'white',
-        borderWidth: 1
+        borderWidth: 3
       }]
     },
     options: {
@@ -31,7 +30,7 @@ $(document).ready(function() {
         yAxes: [{
           gridLines: {
             color: 'white',
-            display:false
+            display: false
           },
           ticks: {
             min: -100,
@@ -40,19 +39,35 @@ $(document).ready(function() {
         }]
       },
       legend: {
-        position: 'left'
+        display: false
       }
     }
   });
 
+  var first = chart.data.datasets[0].data;
+  var second = chart.data.datasets[1].data;
+  first.length = 6;
+  second.length = 6;
+  first.fill(0);
+  second.fill(2);
+
   $('#start-splash-page').on("click", function() {
     controllers.start();
+  });
+  $('#pause').on("click", function() {
+    controllers.pause();
+  });
+  $('#start-recording-page').on("click", function() {
+    controllers.continue();
   });
   $('#stop').on("click", function() {
     controllers.stop();
   });
-  $('#start-recording-page').on("click", function() {
-    controllers.continue();
+
+  var elem = new Foundation.Reveal($('#modal'));
+  $('#chart').on("click", function(e) {
+    var activePoint = chart.getElementAtEvent(e);
+    controllers.openModal(activePoint);
   });
 });
 
@@ -65,25 +80,53 @@ var controllers = {
   },
   continue: function() {
     $('#start-recording-page').css('display', 'none');
-    $('#stop').css('display', 'block');
+    $('#pause').css('display', 'inline');
     _this = this;
     timer = setInterval(function() {
       _this.update() 
     }, 5000);
   },
+  pause: function() {
+    $('#pause').css('display', 'none');
+    $('#start-recording-page').css('display', 'inline');
+    clearInterval(timer);
+  },
   stop: function() {
+    $('#pause').css('display', 'none');
+    $('#start-recording-page').css('display', 'none');
     $('#stop').css('display', 'none');
-    $('#start-recording-page').css('display', 'block');
     clearInterval(timer);
   },
   update: function() {
-    $.get({
-      url: "emotions.py"
-    }).done(function(data) {
+    // $.get({
+    //   url: "emotions.py"
+    // }).done(function(data) {
 
-    }).fail(function(err) {
-      console.log('Failed:', err);
-    });
+    // }).fail(function(err) {
+    //   console.log('Failed:', err);
+    // });
+    $('#splash-page').css('display', 'none');
+    var first = chart.data.datasets[0].data;
+    var second = chart.data.datasets[1].data;
+
+    first.push();
+    first.shift();
+
+    if( window.sentiStats !== undefined){
+      var sentiStats = window.sentiStats;
+      console.log(sentiStats, typeof sentiStats) 
+    }
+    if (sentiStats !== null && sentiStats !== undefined){
+      second.push(sentiStats[sentiStats.length- 1]*100);
+      second.shift();
+    }
+    
+    chart.update();
+  },
+  openModal: function(activePoint) {
+    if (activePoint.length > 0) {
+      $('#modal').foundation('open');
+    }
   }
 };
 

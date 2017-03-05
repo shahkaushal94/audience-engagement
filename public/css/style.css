@@ -1,36 +1,63 @@
-html {
-  background: linear-gradient(#9b59b6, #8e44ad);
+body {
+  background: linear-gradient(#9b59b6, #8e44ad) !important;
   height: 100vh;
+  padding: 0;
+  overflow-y: hidden;
 }
 
-body {
-  height: 100vh;
-  overflow-y: hidden;
-  font: 14px "Cabin", sans-serif;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  font-family: "Cabin", sans-serif !important;
   color: white;
 }
 
+i {
+  color: white;
+  font-size: 50px !important;
+  cursor: pointer;
+  margin: 0;
+  display: inline;
+}
+
 #splash-page {
-  display: block;
+  margin-top: 30vh;
 }
 
 #recording-page {
+  margin-top: 10vh;
   display: none;
 }
 
-.icon {
-  font-size: 50px !important;
-  cursor: pointer;
+#start-recording-page {
+  display: none;
 }
 
-#title-wrapper {
+#title-wrapper,
+#text-wrapper {
   width: 100vw;
-  top: 20px;
-  text-align: center;
   position: fixed;
 }
 
-#title {
+#first-label,
+#second-label {
+  display: inline;
+}
+
+#second-label {
+  margin-left: 18vw;
+  color: yellow;
+}
+
+#stop {
+  margin-left: 3vw;
+}
+
+.title {
   font-size: 36px;
 }
 
@@ -39,13 +66,23 @@ body {
 }
 
 #chart {
+  margin-top: 25vh;
   position: absolute;
-  padding-left: 20px;
-  padding-right: 20px;
 }
 
 .chart-area-wrapper {
-  margin-top: 22vh;
-  width: 1500px;
+  width: 95vw;
   overflow-x: scroll;
+  margin: 0 auto;
+}
+
+<<<<<<< HEAD
+#outputText, .cursor{
+  position: absolute;
+  margin-left: 100px;
+  margin-top: 400px;
+=======
+#text-wrapper {
+  margin-top: 70vh;
+>>>>>>> 0def3691160be4f60e7b62481008f05b15c9599c
 }
