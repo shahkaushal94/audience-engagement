@@ -1,11 +1,12 @@
 var chart;
+var info = {};
 
 $(document).ready(function() {
   Chart.defaults.global.defaultFontColor = 'white';
   chart = new Chart($('#chart'), {
     type: 'line',
     data: {
-      labels: ["", "", "", "", "", ""],
+      labels: ["", "", "", "", ""],
       datasets: [{
         fill: false,
         data: [],
@@ -53,11 +54,20 @@ $(document).ready(function() {
   $('#start-splash-page').on("click", function() {
     controllers.start();
   });
-  $('#stop').on("click", function() {
-    controllers.stop();
+  $('#pause').on("click", function() {
+    controllers.pause();
   });
   $('#start-recording-page').on("click", function() {
     controllers.continue();
+  });
+  $('#stop').on("click", function() {
+    controllers.stop();
+  });
+
+  var elem = new Foundation.Reveal($('#modal'));
+  $('#chart').on("click", function(e) {
+    var activePoint = chart.getElementAtEvent(e);
+    controllers.openModal(activePoint);
   });
 });
 
@@ -70,15 +80,21 @@ var controllers = {
   },
   continue: function() {
     $('#start-recording-page').css('display', 'none');
-    $('#stop').css('display', 'block');
+    $('#pause').css('display', 'inline');
     _this = this;
     timer = setInterval(function() {
       _this.update() 
     }, 5000);
   },
+  pause: function() {
+    $('#pause').css('display', 'none');
+    $('#start-recording-page').css('display', 'inline');
+    clearInterval(timer);
+  },
   stop: function() {
+    $('#pause').css('display', 'none');
+    $('#start-recording-page').css('display', 'none');
     $('#stop').css('display', 'none');
-    $('#start-recording-page').css('display', 'block');
     clearInterval(timer);
   },
   update: function() {
@@ -97,6 +113,11 @@ var controllers = {
     second.push(54);
     second.shift();
     chart.update();
+  },
+  openModal: function(activePoint) {
+    if (activePoint.length > 0) {
+      $('#modal').foundation('open');
+    }
   }
 };
 
