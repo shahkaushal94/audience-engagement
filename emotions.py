@@ -124,25 +124,25 @@ def calcScore():
     for item in resList:
         #print item
         if (item == "happiness"):
-            scoreImg+=4
+            scoreImg+=5
         elif (item == "sadness"):
-            scoreImg-=4
+            scoreImg-=5
         elif (item == "anger"):
-            scoreImg-=4
+            scoreImg-=10
         elif (item == "surprise"):
-            scoreImg+=4
+            scoreImg+=10
         elif (item == "contempt"):
             scoreImg-=4
         elif (item == "fear"):
             scoreImg-=4
         else:
-            scoreImg+=0
+            scoreImg+=1
     
     length = len(resList)
     try:
         ans = (scoreImg/length)
     except ZeroDivisionError:
-        ans = float('Inf')
+        ans = 1
         #print "Score during last speech duration :"
     print ans
         #print "\n"

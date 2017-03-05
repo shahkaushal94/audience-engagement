@@ -1,4 +1,8 @@
 var chart;
+var info = {};
+window.scores = [];
+var startTime = Date();
+
 var info = {
   userData: {
     data: [],
@@ -118,6 +122,7 @@ var controllers = {
     chart.data.datasets[1].data = info.audienceData.data;
     chart.update();
   },
+
   updateUser: function() {
     var userData = chart.data.datasets[0].data;
 
@@ -136,6 +141,15 @@ var controllers = {
   },
   updateAudience: function() {
     var audienceData = chart.data.datasets[1].data;
+
+    setInterval(getImageScores(), 5000)
+
+    console.log(window.scores)
+    var scores = window.scores;
+    if(scores !== null && scores[scores.length-1] !== undefined){
+       audienceData.push(scores[scores.length-1]);
+       audienceData.shift();
+     }
 
     info.audienceData.data.push(0);
     info.audienceData.info.push({
@@ -178,4 +192,13 @@ var view = {
       $('#modal').foundation('close');
     }, 1500);
   }
+}
+
+function getImageScores(){
+  axios.get('http://localhost:3000/getImage')
+  .then(function(data){
+    var score = parseInt(data.data)*10.56 || 0;
+    console.log(score);
+    window.scores.push(score);
+  })
 }
