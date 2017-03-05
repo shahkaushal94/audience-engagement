@@ -1,6 +1,7 @@
 var chart;
 var info = {};
 window.scores = [];
+var startTime = Date();
 
 $(document).ready(function() {
   Chart.defaults.global.defaultFontColor = 'white';
