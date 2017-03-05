@@ -92,10 +92,19 @@ var controllers = {
     $('#splash-page').css('display', 'none');
     var first = chart.data.datasets[0].data;
     var second = chart.data.datasets[1].data;
-    first.push(30);
+
+    first.push();
     first.shift();
-    second.push(54);
-    second.shift();
+
+    if( window.sentiStats !== undefined){
+      var sentiStats = window.sentiStats;
+      console.log(sentiStats, typeof sentiStats) 
+    }
+    if (sentiStats !== null && sentiStats !== undefined){
+      second.push(sentiStats[sentiStats.length- 1]*100);
+      second.shift();
+    }
+    
     chart.update();
   }
 };

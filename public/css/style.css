@@ -68,3 +68,9 @@ i {
   overflow-x: scroll;
   margin: 0 auto;
 }
+
+#outputText, .cursor{
+  position: absolute;
+  margin-left: 100px;
+  margin-top: 400px;
+}
