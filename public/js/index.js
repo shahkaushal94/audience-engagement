@@ -80,8 +80,6 @@ $(document).ready(function() {
   });
 });
 
-var timer;
-
 var controllers = {
   start: function() {
     view.changeView();
@@ -104,14 +102,16 @@ var controllers = {
   pause: function() {
     $('#pause').css('display', 'none');
     $('#start-recording-page').css('display', 'inline');
-    clearInterval(timer);
+    clearInterval(timerUser);
+    clearInterval(timerAudience);
+    clearInterval(timerImage);
   },
   stop: function() {
-    $('#pause').css('display', 'none');
-    $('#start-recording-page').css('display', 'none');
+    this.pause();
     $('#stop').css('display', 'none');
-    $('#text-wrap').innerHTML = "";
-    clearInterval(timer);
+    $('#text-wrapper').html("");
+    var maxWidth = Math.max(info.userData.data.length, info.audienceData.data.length);
+    $('#text-wrap').css('width', 10 * maxWidth + 'vw');
     chart.data.labels.length = info.userData.data.length;
     chart.data.labels.fill("");
     chart.data.datasets[0].data = info.userData.data;
