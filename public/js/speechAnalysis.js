@@ -18,7 +18,7 @@
 
       speech.startListening(
         function(partialTxt) {
-         console.log("Parital: " + partialTxt);
+         console.log("Partial: " + partialTxt);
          document.getElementById('text-wrapper').innerHTML 
          = ` 
          <h1>
@@ -44,10 +44,13 @@
            ]
          }
        })
-        .then(function (response) {
+        .then(function(response) {
           console.log("Fulltext: " + fullText);
           statsToDiaplay = `${statsToDiaplay} ${response.data.documents[0].score}`
-          sentiStats.push(response.data.documents[0].score);
+          sentiStats.push({
+            text: fullText,
+            rating: response.data.documents[0].score * 100
+          });
           window.sentiStats = sentiStats;
           textToDisplay = `${textToDisplay} ${fullText}`;
         })
