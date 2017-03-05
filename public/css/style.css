@@ -10,7 +10,8 @@ h2,
 h3,
 h4,
 h5,
-h6 {
+h6,
+p {
   font-family: "Cabin", sans-serif !important;
   color: white;
 }
@@ -20,6 +21,7 @@ i {
   font-size: 50px !important;
   cursor: pointer;
   margin: 0;
+  display: inline;
 }
 
 #splash-page {
@@ -35,7 +37,8 @@ i {
   display: none;
 }
 
-#title-wrapper {
+#title-wrapper,
+#text-wrapper {
   width: 100vw;
   position: fixed;
 }
@@ -46,8 +49,12 @@ i {
 }
 
 #second-label {
-  margin-left: 15vw;
+  margin-left: 18vw;
   color: yellow;
+}
+
+#stop {
+  margin-left: 3vw;
 }
 
 .title {
@@ -69,8 +76,13 @@ i {
   margin: 0 auto;
 }
 
+<<<<<<< HEAD
 #outputText, .cursor{
   position: absolute;
   margin-left: 100px;
   margin-top: 400px;
+=======
+#text-wrapper {
+  margin-top: 70vh;
+>>>>>>> 0def3691160be4f60e7b62481008f05b15c9599c
 }

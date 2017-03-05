@@ -10,7 +10,7 @@ router.get('/', function(req, res) {
   });
 });
 
-router.get('/getImage', function(req, res){
+router.get('/getImage', function(req, res, next){
 	console.log(getImages());
 
 	res.send({
