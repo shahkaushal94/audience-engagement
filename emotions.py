@@ -128,12 +128,10 @@ headers['Content-Type'] = 'application/octet-stream'
 json = None
 params = None
 
-pathToImageFiles = '/Users/prathameshnaik/Pictures/'
-
 def calcScore():
         scoreImg = 0        
         for item in resList:
-        	print item
+        	#print item
                 if (item == "happiness"):
                 	scoreImg+=4
                 elif (item == "sadness"):
@@ -154,9 +152,9 @@ def calcScore():
 		ans = (scoreImg/length)
 	except ZeroDivisionError:
 		ans = float('Inf')
-        print "Score during last speech duration :"
+        #print "Score during last speech duration :"
         print ans
-        print "\n"
+        #print "\n"
 	return ans
 
 
@@ -171,12 +169,14 @@ def captureClick():
 	# to adjust light levels, if necessary
 	for i in xrange(ramp_frames):
  		camera.read()
-	print("Taking image...")
+	#print("Taking image...")
 
 	retval,im = camera.read()
 	camera_capture = im
 
-	file = "/Users/prathameshnaik/Desktop/test_image.jpg"
+	#file = "/Users/prathameshnaik/Desktop/test_image.jpg"
+	file = "test_image.jpg"
+
 	# A nice feature of the imwrite method is that it will automatically choose the
 	# correct format based on the file extension you provide. Convenient!
 	cv2.imwrite(file, camera_capture)
@@ -190,9 +190,10 @@ def getRetValue():
 	#Capture the Image
 	captureClick()
 	#time.sleep(2)
-	filename = "/Users/prathameshnaik/Desktop/test_image.jpg"
+	#filename = "/Users/prathameshnaik/Desktop/test_image.jpg"
+	filename = "test_image.jpg"
 	with open( filename, 'rb' ) as f:
-		print filename
+		#print filename
     		data = f.read()
 	result = processRequest( json, data, headers, params )
 
@@ -207,9 +208,14 @@ def getRetValue():
 	resList = []
 	#Remove file required ???
 	return res		
-		
-
-getRetValue()
 
 
-print "Program Halted Properly"
+def main():
+	getRetValue()
+			
+
+if __name__ == "__main__":
+	main()
+	
+
+#print "Program Halted Properly"
