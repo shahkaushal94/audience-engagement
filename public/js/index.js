@@ -123,7 +123,6 @@ var controllers = {
 
     if (window.sentiStats !== undefined) {
       var sentiStats = window.sentiStats;
-      console.log(sentiStats, typeof sentiStats);
     }
     if (sentiStats !== null && sentiStats !== undefined) {
       var returnInfo = sentiStats[sentiStats.length - 1];
@@ -131,7 +130,6 @@ var controllers = {
       info.userData.info.push(returnInfo);
       userData.push(returnInfo.rating);
       userData.shift();
-      console.log("User: " + info.userData.info);
     }
 
     chart.update();
@@ -146,12 +144,11 @@ var controllers = {
     });
     audienceData.push(0);
     audienceData.shift();
-    console.log("Audience: " + info.audienceData.info);
 
     chart.update();
   },
   updateImage: function() {
-    getSearchImages(info.userData.info[info.userData.info.length - 1].text, view.openImage);
+    getSearchImages(info.userData.info.length == 0 ? "" : info.userData.info[info.userData.info.length - 1].text, view.openImage);
   }
 };
 
@@ -165,7 +162,6 @@ var view = {
       var type = activePoint[0]._datasetIndex;
       var index = activePoint[0]._index + 1;
       if (type == 0 && info.userData.info.length >= index) {
-        console.log('heyyy');
         var userData = info.userData.info[index];
         $('#speech').html(userData.text);
         $('#speech-rating').html(userData.rating);
@@ -178,7 +174,6 @@ var view = {
     }
   },
   openImage: function(source) {
-    console.log(source);
     $('#image-rating').innerHTML = source;
     $('#modal').foundation('open');
   }

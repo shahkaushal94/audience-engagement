@@ -15,7 +15,9 @@ function getSearchImages(callback) {
             data: "{body}",
         })
         .done(function(data) {
-            return callback(data.value[0].contentUrl);
+            if (callback) {
+                return callback(data.value[0].contentUrl);
+            }
         })
         .fail(function(err) {
             console.log(err);
