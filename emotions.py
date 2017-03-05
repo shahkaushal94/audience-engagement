@@ -202,7 +202,7 @@ def getRetValue():
 
 
 def main():
-    getRetValue()
+    print(getRetValue())
             
 
 if __name__ == "__main__":

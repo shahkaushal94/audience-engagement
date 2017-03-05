@@ -109,12 +109,10 @@ var controllers = {
     var first = chart.data.datasets[0].data;
     var second = chart.data.datasets[1].data;
 
-    first.push();
-    first.shift();
+    setInterval(getImageScores(first), 4000)
 
     if( window.sentiStats !== undefined){
       var sentiStats = window.sentiStats;
-      console.log(sentiStats, typeof sentiStats) 
     }
     if (sentiStats !== null && sentiStats !== undefined){
       second.push(sentiStats[sentiStats.length- 1]*100);
@@ -135,4 +133,11 @@ var view = {
     $('#splash-page').css('display', 'none');
     $('#recording-page').css('display', 'block');
   }
+}
+
+function getImageScores(first){
+  axios.get('http://localhost:3000/getImage')
+  .then(function(data){
+    console.log(first.push(data.data))
+  })
 }
