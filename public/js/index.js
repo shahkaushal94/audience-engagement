@@ -84,6 +84,10 @@ $(document).ready(function() {
   });
 });
 
+var timerUser;
+var timerAudience;
+var timerImage;
+
 var controllers = {
   start: function() {
     view.changeView();
@@ -123,7 +127,6 @@ var controllers = {
     chart.data.datasets[1].data = info.audienceData.data;
     chart.update();
   },
-
   updateUser: function() {
     var userData = chart.data.datasets[0].data;
 
@@ -174,10 +177,11 @@ var view = {
     if (activePoint.length > 0) {
       var type = activePoint[0]._datasetIndex;
       var index = activePoint[0]._index + 1;
+      console.log(activePoint);
       if (type == 0 && info.userData.info.length >= index) {
         var userData = info.userData.info[index];
         $('#modal').html("<h3>Speech: " + userData.text + "<br>Rating: " + userData.rating + "</h3>");
-      } else if (type == 1 && info.audienceData.info_length >- index) {
+      } else if (type == 1 && info.audienceData.info_length >= index) {
         var audienceData = info.audienceData.info[index];
         $('#modal').html("<img src='" + audienceData.image + "'><h3><br>Rating: " + audienceData.rating + "</h3>");
       }
@@ -193,8 +197,8 @@ var view = {
   }
 }
 
-function getImageScores(){
-  axios.get('http://localhost:3000/getImage')
+function getImageScores() {
+  axios.get('/getImage')
   .then(function(data){
     var score = parseInt(data.data) * 10.56 || 0;
     console.log(score);
