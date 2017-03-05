@@ -149,12 +149,14 @@ var controllers = {
 
     console.log(window.scores)
     var scores = window.scores;
-    // if (scores !== null && scores[scores.length - 1] !== undefined) {
-    //   info.audienceData.data.push(scores.rating);
-    //   info.audienceData.info.push(scores);
-    //   audienceData.push(scores[scores.length - 1]);
-    //   audienceData.shift();
-    // }
+    if (scores !== null && scores[scores.length - 1] !== undefined) {
+      info.audienceData.data.push(scores[scores.length - 1]);
+      info.audienceData.info.push({
+        rating: scores[scores.length - 1]
+      });
+      audienceData.push(scores[scores.length - 1]);
+      audienceData.shift();
+    }
 
     chart.update();
   },
@@ -183,7 +185,7 @@ var view = {
     }
   },
   openImage: function(source) {
-    $('#image-rating').html("<img src='" + source + "'>");
+    $('#modal').html("<img src='" + source + "'>");
     $('#modal').foundation('open');
     setTimeout(function() {
       $('#modal').foundation('close');
@@ -194,7 +196,7 @@ var view = {
 function getImageScores(){
   axios.get('http://localhost:3000/getImage')
   .then(function(data){
-    var score = parseInt(data.data)*10.56 || 0;
+    var score = parseInt(data.data) * 10.56 || 0;
     console.log(score);
     window.scores.push(score);
   })
