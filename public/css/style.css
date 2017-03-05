@@ -1,36 +1,36 @@
-html {
-  background: linear-gradient(#9b59b6, #8e44ad);
+body {
+  background: linear-gradient(#9b59b6, #8e44ad) !important;
   height: 100vh;
+  padding: 0;
+  overflow-y: hidden;
 }
 
-body {
-  height: 100vh;
-  overflow-y: hidden;
-  font: 14px "Cabin", sans-serif;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Cabin", sans-serif !important;
   color: white;
 }
 
-#splash-page {
-  display: block;
+i {
+  color: white;
+  font-size: 50px !important;
+  cursor: pointer;
 }
 
 #recording-page {
   display: none;
 }
 
-.icon {
-  font-size: 50px !important;
-  cursor: pointer;
-}
-
 #title-wrapper {
   width: 100vw;
-  top: 20px;
-  text-align: center;
   position: fixed;
 }
 
-#title {
+.title {
   font-size: 36px;
 }
 
@@ -40,11 +40,9 @@ body {
 
 #chart {
   position: absolute;
-  margin: 0 auto;
 }
 
 .chart-area-wrapper {
   width: 95vw;
-  margin-top: 22vh;
   overflow-x: scroll;
 }

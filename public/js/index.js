@@ -1,25 +1,22 @@
 var chart;
 
 $(document).ready(function() {
+  $('#recording-page').css('display', 'none');
   Chart.defaults.global.defaultFontColor = 'white';
   chart = new Chart($('#chart'), {
     type: 'line',
     data: {
       labels: ["", "", "", "", "", ""],
       datasets: [{
-        label: 'Personal Tone',
         fill: false,
         data: [],
-        backgroundColor: 'yellow',
         borderColor: 'yellow',
-        borderWidth: 1
+        borderWidth: 3
       }, {
-        label: 'Audience Engagement',
         fill: false,
         data: [],
-        backgroundColor: 'white',
         borderColor: 'white',
-        borderWidth: 1
+        borderWidth: 3
       }]
     },
     options: {
@@ -33,7 +30,7 @@ $(document).ready(function() {
         yAxes: [{
           gridLines: {
             color: 'white',
-            display:false
+            display: false
           },
           ticks: {
             min: -100,
@@ -42,7 +39,7 @@ $(document).ready(function() {
         }]
       },
       legend: {
-        position: 'top'
+        display: false
       }
     }
   });
