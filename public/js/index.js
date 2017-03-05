@@ -76,7 +76,7 @@ $(document).ready(function() {
   var elem = new Foundation.Reveal($('#modal'));
   $('#chart').on("click", function(e) {
     var activePoint = chart.getElementAtEvent(e);
-    controllers.openModal(activePoint);
+    view.openModal(activePoint);
   });
 });
 
@@ -91,8 +91,14 @@ var controllers = {
     $('#start-recording-page').css('display', 'none');
     $('#pause').css('display', 'inline');
     _this = this;
-    timer = setInterval(function() {
-      _this.update() 
+    timerUser = setInterval(function() {
+      _this.updateUser() 
+    }, 5000);
+    timerAudience = setInterval(function() {
+      _this.updateAudience() 
+    }, 5000);
+    timerImage = setInterval(function() {
+      _this.updateImage()
     }, 5000);
   },
   pause: function() {
@@ -104,6 +110,7 @@ var controllers = {
     $('#pause').css('display', 'none');
     $('#start-recording-page').css('display', 'none');
     $('#stop').css('display', 'none');
+    $('#text-wrap').innerHTML = "";
     clearInterval(timer);
     chart.data.labels.length = info.userData.data.length;
     chart.data.labels.fill("");
@@ -111,10 +118,8 @@ var controllers = {
     chart.data.datasets[1].data = info.audienceData.data;
     chart.update();
   },
-  update: function() {
-    $('#splash-page').css('display', 'none');
+  updateUser: function() {
     var userData = chart.data.datasets[0].data;
-    var audienceData = chart.data.datasets[1].data;
 
     if (window.sentiStats !== undefined) {
       var sentiStats = window.sentiStats;
@@ -129,6 +134,11 @@ var controllers = {
       console.log("User: " + info.userData.info);
     }
 
+    chart.update();
+  },
+  updateAudience: function() {
+    var audienceData = chart.data.datasets[1].data;
+
     info.audienceData.data.push(0);
     info.audienceData.info.push({
       image: "",
@@ -137,22 +147,11 @@ var controllers = {
     audienceData.push(0);
     audienceData.shift();
     console.log("Audience: " + info.audienceData.info);
-    
+
     chart.update();
   },
-  openModal: function(activePoint) {
-    if (activePoint.length > 0) {
-      var index = activePoint[0]._index + 1;
-      if (info.userData.info.length >= index) {
-        var userData = info.userData.info[index];
-        var audienceData = info.audienceData.info[index];
-        $('#speech').innerHTML = userData.text;
-        $('#speech-rating').innerHTML = userData.rating;
-        $('#image').innerHTML = audienceData.image;
-        $('#image-rating').innerHTML = audienceData.rating;
-        $('#modal').foundation('open');
-      }
-    }
+  updateImage: function() {
+    getSearchImages(info.userData.info[info.userData.info.length - 1].text, view.openImage);
   }
 };
 
@@ -160,5 +159,27 @@ var view = {
   changeView: function() {
     $('#splash-page').css('display', 'none');
     $('#recording-page').css('display', 'block');
+  },
+  openModal: function(activePoint) {
+    if (activePoint.length > 0) {
+      var type = activePoint[0]._datasetIndex;
+      var index = activePoint[0]._index + 1;
+      if (type == 0 && info.userData.info.length >= index) {
+        console.log('heyyy');
+        var userData = info.userData.info[index];
+        $('#speech').html(userData.text);
+        $('#speech-rating').html(userData.rating);
+      } else if (type == 1 && info.audienceData.info_length >- index) {
+        var audienceData = info.audienceData.info[index];
+        $('#image').html(audienceData.image);
+        $('#image-rating').html(audienceData.rating);
+      }
+      $('#modal').foundation('open');
+    }
+  },
+  openImage: function(source) {
+    console.log(source);
+    $('#image-rating').innerHTML = source;
+    $('#modal').foundation('open');
   }
 }
