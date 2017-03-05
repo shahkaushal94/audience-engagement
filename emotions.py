@@ -71,9 +71,9 @@ def processRequest( json, data, headers, params ):
 ################### render Result on Image #################
 
 def renderResultOnImage( result, img ):
-
+    
     """Display the obtained results onto the input image"""
-
+    
     for currFace in result:
         faceRectangle = currFace['faceRectangle']
         cv2.rectangle( img,(faceRectangle['left'],faceRectangle['top']),
@@ -120,25 +120,24 @@ json = None
 params = None
 
 def calcScore():
-<<<<<<< HEAD
     scoreImg = 0        
     for item in resList:
         #print item
         if (item == "happiness"):
             scoreImg+=4
         elif (item == "sadness"):
-                scoreImg-=4
+            scoreImg-=4
         elif (item == "anger"):
-                scoreImg-=4
+            scoreImg-=4
         elif (item == "surprise"):
-                scoreImg+=4
+            scoreImg+=4
         elif (item == "contempt"):
-                scoreImg-=4
+            scoreImg-=4
         elif (item == "fear"):
-                scoreImg-=4
+            scoreImg-=4
         else:
-                scoreImg+=0
-
+            scoreImg+=0
+    
     length = len(resList)
     try:
         ans = (scoreImg/length)
@@ -211,95 +210,3 @@ if __name__ == "__main__":
     
 
 #print "Program Halted Properly"
-=======
-        scoreImg = 0        
-        for item in resList:
-        	#print item
-                if (item == "happiness"):
-                	scoreImg+=4
-                elif (item == "sadness"):
-                        scoreImg-=4
-                elif (item == "anger"):
-                        scoreImg-=4
-                elif (item == "surprise"):
-                        scoreImg+=4
-                elif (item == "contempt"):
-                        scoreImg-=4
-                elif (item == "fear"):
-                        scoreImg-=4
-                else:
-                        scoreImg+=0
- 	
-	length = len(resList)
-	try:
-		ans = (scoreImg/length)
-	except ZeroDivisionError:
-		ans = float('Inf')
-        #print "Score during last speech duration :"
-        print ans
-        #print "\n"
-	return ans
-
-
-def captureClick():
-	camera_port = 0
-	camera = cv2.VideoCapture(camera_port)
-
-	#Number of frames to throw away while the camera adjusts to light levels
-	ramp_frames = 30
- 
-	# Ramp the camera - these frames will be discarded and are only used to allow v4l2
-	# to adjust light levels, if necessary
-	for i in xrange(ramp_frames):
- 		camera.read()
-	#print("Taking image...")
-
-	retval,im = camera.read()
-	camera_capture = im
-
-	#file = "/Users/prathameshnaik/Desktop/test_image.jpg"
-	file = "test_image.jpg"
-
-	# A nice feature of the imwrite method is that it will automatically choose the
-	# correct format based on the file extension you provide. Convenient!
-	cv2.imwrite(file, camera_capture)
- 
-	# You'll want to release the camera, otherwise you won't be able to create a new
-	# capture object until your script exits
-	del(camera)
-
-
-def getRetValue():
-	#Capture the Image
-	captureClick()
-	#time.sleep(2)
-	#filename = "/Users/prathameshnaik/Desktop/test_image.jpg"
-	filename = "test_image.jpg"
-	with open( filename, 'rb' ) as f:
-		#print filename
-    		data = f.read()
-	result = processRequest( json, data, headers, params )
-
-	if result is not None:
-	# Load the original image from disk
-		data8uint = np.fromstring( data, np.uint8 ) # Convert string to an unsigned int array
-		img = cv2.cvtColor( cv2.imdecode( data8uint, cv2.IMREAD_COLOR ), cv2.COLOR_BGR2RGB )
-		renderResultOnImage( result, img )
-		#ig, ax = plt.subplots(figsize=(15, 20))
-		#ax.imshow( img )
-	res = calcScore()
-	resList = []
-	#Remove file required ???
-	return res		
-
-
-def main():
-	getRetValue()
-			
-
-if __name__ == "__main__":
-	main()
-	
-
-#print "Program Halted Properly"
->>>>>>> 0def3691160be4f60e7b62481008f05b15c9599c

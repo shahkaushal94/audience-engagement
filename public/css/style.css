@@ -58,7 +58,7 @@ i {
 }
 
 .title {
-  font-size: 36px;
+  font-size: 44px;
 }
 
 .chart-wrapper {
@@ -76,13 +76,17 @@ i {
   margin: 0 auto;
 }
 
-<<<<<<< HEAD
-#outputText, .cursor{
-  position: absolute;
-  margin-left: 100px;
-  margin-top: 400px;
-=======
+#modal h3,
+#modal p {
+  color: black;
+}
+
 #text-wrapper {
   margin-top: 70vh;
->>>>>>> 0def3691160be4f60e7b62481008f05b15c9599c
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+#text-wrapper h1 {
+  float: right
 }
